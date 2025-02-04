@@ -1,28 +1,64 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Toolbar
+      :tables="tables"
+      @add-table="handleAddTable"
+      @add-relation="handleAddRelation"
+      @export="handleExport"
+    />
+    <SchemaCanvas :tables="tables" :relations="relations" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SchemaCanvas from './components/SchemaCanvas.vue';
+import Toolbar from './components/CanvasToolbar.vue';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  components: { SchemaCanvas, Toolbar },
+  data() {
+    return {
+      tables: [
+        {
+          id: 1,
+          name: 'New Table 1',
+          x: 50,
+          y: 50,
+          columns: [{ name: 'id', type: 'INT' }]
+        },
+        {
+          id: 2,
+          name: 'New Table 2',
+          x: 70,
+          y: 50,
+          columns: [{ name: 'id', type: 'INT' }]
+        },
+        {
+          id: 3,
+          name: 'New Table 3',
+          x: 90,
+          y: 50,
+          columns: [{ name: 'id', type: 'INT' }]
+        },
+      ],
+      relations: []
+    };
+  },
+  methods: {
+    handleAddTable(newTable) {
+      this.tables.push(newTable);
+    },
+    handleAddRelation(relation) {
+      this.relations.push(relation);
+    },
+    handleExport() {
+      const schema = {
+        tables: this.tables,
+        relations: this.relations
+      };
+      console.log('Exported Schema:', schema);
+      // Можно добавить логику экспорта в JSON/SQL
+    }
   }
-}
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

@@ -1,9 +1,9 @@
 <template>
   <div class="schema-canvas">
     <SvgComponent 
-    ref="svgCanvas" 
-    width="100%" 
-    height="800" />
+      ref="svgCanvas" 
+      width="100%" 
+      height="100%" />
 
     <!-- Таблицы -->
     <div
@@ -76,6 +76,7 @@ export default {
 .schema-canvas {
   position: relative;
   background: #f0f0f0;
+  overflow: auto;
 }
 
 .table {

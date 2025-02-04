@@ -40,10 +40,16 @@
     padding: 10px;
     background: #e0e0e0;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+    overflow: auto;
   }
   
   button {
     margin-right: 10px;
     padding: 8px 12px;
+    height: 45px;
   }
   </style>

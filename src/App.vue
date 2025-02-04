@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="erd-container">
     <Toolbar
+      class="toolbar"
       :tables="tables"
       @add-table="handleAddTable"
       @add-relation="handleAddRelation"
@@ -62,3 +63,11 @@ export default {
   }
 };
 </script>
+<style scoped>
+.erd-container {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+</style>

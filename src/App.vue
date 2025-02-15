@@ -1,53 +1,62 @@
 <template>
-  <div class="erd-container">
-    <Toolbar
-      class="toolbar"
-      :tables="tables"
-      @add-table="handleAddTable"
-      @add-relation="handleAddRelation"
-      @export="handleExport"
+  <div>
+    <ERDDiagramm 
+      :tables="tables" 
+      @add-new-table="addTable"
     />
-    <SchemaCanvas :tables="tables" :relations="relations" />
   </div>
 </template>
 
 <script>
-import SchemaCanvas from './components/SchemaCanvas.vue';
-import Toolbar from './components/CanvasToolbar.vue';
+import ERDDiagramm from './components/Main.vue';
 
 export default {
-  components: { SchemaCanvas, Toolbar },
+  components: { ERDDiagramm },
   data() {
     return {
       tables: [
         {
           id: 1,
           name: 'New Table 1',
-          x: 50,
-          y: 50,
-          columns: [{ name: 'id', type: 'INT' }]
-        },
-        {
-          id: 2,
-          name: 'New Table 2',
-          x: 70,
-          y: 50,
-          columns: [{ name: 'id', type: 'INT' }]
-        },
-        {
-          id: 3,
-          name: 'New Table 3',
-          x: 90,
-          y: 50,
-          columns: [{ name: 'id', type: 'INT' }]
-        },
+          comment: 'Это очень важная таблица, она нужна для существования таблицы ради таблицы',
+          x: 10,
+          y: 25,
+          relations: [],
+          fields: [
+            {
+              id: 1,
+              name: 'id',
+              nullable: false,
+              unique: true, 
+              increment: true,
+              comment: null
+            }
+          ]
+        }
       ],
       relations: []
     };
   },
   methods: {
-    handleAddTable(newTable) {
-      this.tables.push(newTable);
+    addTable() {
+      this.tables.push({
+          id: (this.tables.length || 0) + 1,
+          name: `New Table ${(this.tables.length || 0) + 1}`,
+          comment: 'Это очень важная таблица, она нужна для существования таблицы ради таблицы',
+          x: 10,
+          y: 25,
+          relations: [],
+          fields: [
+            {
+              id: 1,
+              name: 'id',
+              nullable: false,
+              unique: true, 
+              increment: true,
+              comment: null
+            }
+          ]
+        });
     },
     handleAddRelation(relation) {
       this.relations.push(relation);
@@ -66,7 +75,6 @@ export default {
 <style scoped>
 .erd-container {
   display: grid;
-  grid-template-columns: 30% 70%;
   min-height: 100vh;
   overflow: hidden;
 }

@@ -3,28 +3,32 @@
         <div class="relations-tab-head">
             <!-- TODO здесь селект -->
             <input v-model="search" type="search" placeholder="Поиск" class="relations-search-input" /> 
-            <button class="add-relation-btn" @click="$emit('add-new-relation')">Добавить связь</button>
+            <button class="add-relation-btn" @click="addNewRelation">Добавить связь</button>
         </div>
         <div v-if="relations.length" class="relations-tab-relations">
             <details 
-                v-for="relation in relations" 
+                v-for="relation in localValue" 
                 :key="relation.id"
                 :open="editRelation.id === relation.id"
             >
-                <summary>{{ relation.name || 'relation' }}</summary>
-                <TabsTableBlock :relation="relations" />
+                <summary>{{`${relation.from?.name || '(пусто)'} (${relation.type}) ${relation.to?.namee || '(пусто)'}` || 'new relation' }}</summary>
+                <TabsRelationBlock :relation="relation" :tables="tables" />
             </details>
         </div>
     </div>
 </template>
 <script>
-import TabsTableBlock from './TabsTableBlock.vue';
+import TabsRelationBlock from './TabsRelationBlock.vue';
 
 export default {
     name: 'RelationsTab',
-    components: { TabsTableBlock },
+    components: { TabsRelationBlock },
     props: {
         relations: {
+            type: Array,
+            default: () => ([])
+        },
+        tables: {
             type: Array,
             default: () => ([])
         },
@@ -37,6 +41,26 @@ export default {
     data(){
         return {
             search: null,
+            localValue: []
+        }
+    },
+    watch: {
+       relations:{
+        immediate: true,
+        deep: true,
+        handler() {
+            this.localValue = this.relations
+        }
+       } 
+    },
+    methods: {
+        addNewRelation(){
+            this.localValue.push({
+                id: `new-${this.localValue.length + 1}`,
+                type: null,
+                from: null,
+                to: null
+            })
         }
     }
 }

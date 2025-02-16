@@ -3,6 +3,7 @@
     <ERDDiagramm 
       :tables="tables" 
       @add-new-table="addTable"
+      @update:table-position="updateTables"
     />
   </div>
 </template>
@@ -38,6 +39,10 @@ export default {
     };
   },
   methods: {
+    updateTables({ table }){
+      const tableIndex = this.tables.findIndex(t => t.id === table.id);
+      this.tables[tableIndex] = {...this.tables[tableIndex], ...table}
+    },
     addTable() {
       this.tables.push({
           id: (this.tables.length || 0) + 1,

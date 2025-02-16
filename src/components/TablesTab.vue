@@ -9,7 +9,7 @@
             <details 
                 v-for="table in tables" 
                 :key="table.id"
-                :open="editTable.id === table.id"
+                :open="editTableId === table.id"
             >
                 <summary>{{ table.name || 'таблица' }}</summary>
                 <TabsTableBlock :table="table" />
@@ -28,10 +28,9 @@ export default {
             type: Array,
             default: () => ([])
         },
-        // TODO здесь id а не объект
-        editTable: {
-            type: Object,
-            default: () => ({})
+        editTableId: {
+            type: [String, Number],
+            default: 1
         }
     },
     data(){
@@ -80,5 +79,11 @@ details {
 
 details:last-child {
     margin-bottom: none;
+}
+
+.tables-tab-container {
+    min-height: calc(100% - 65px);
+    max-height: calc(100% - 65px);
+    overflow: auto;
 }
 </style>

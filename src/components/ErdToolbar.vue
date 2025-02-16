@@ -20,11 +20,14 @@
             <TablesTab
                 v-show="currentTab === 0"
                 :tables="tables"
+                :edit-table-id="editTableId"
                 @add-new-table="$emit('add-new-table')"
             />
             <RelationsTab
                 v-show="currentTab === 1"
                 :relations="relations"
+                :tables="tables"
+                @add-new-relation="$emit('add-new-table', $event)"
             />
         </div>
     </div>
@@ -44,6 +47,10 @@ export default {
         relations: {
             type: Array,
             default: () => ([])
+        },
+        editTableId: {
+            type: [String, Number],
+            default: 1
         }
     },
     components: { TablesTab, RelationsTab},
@@ -93,7 +100,5 @@ export default {
 .tabs-container {
     position: relative;
     padding: 10px;
-    height: calc(100% - 45px);
-    overflow: auto;
 }
 </style>

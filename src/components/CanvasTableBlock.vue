@@ -4,7 +4,7 @@
             {{ tableData.name }}
             <button 
                 class="material-icons"
-                @click="$emit('edit')"
+                @click="$emit('edit', tableData.id)"
             >
                 edit
             </button>
@@ -44,7 +44,7 @@ export default {
 </script>
 <style scoped>
 .table-block {
-    width: 170px;
+    width: 100%;
     height: auto;
     border: 2px solid #494949;
     border-radius: 5px;
@@ -68,7 +68,12 @@ export default {
 button {
     width: 17px;
     height: 17px;
-    font-size: 15;
+    font-size: 15px;
+    padding: 0;
+    background: none;
+    border: none;
+    z-index: 1;
+    cursor: pointer;
 }
 
 .field-indicator {

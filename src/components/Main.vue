@@ -3,7 +3,7 @@
         <Toolbar 
             :tables="tables"
             :relations="relations" 
-            :edit-table="editableTable"
+            :edit-table-id="editableTableId"
             @edit-table="$emit('edit-table', $event)"
             @edit-relation="$emit('edit-ralation', $event)"
             @add-new-table="$emit('add-new-table')"
@@ -12,7 +12,8 @@
             :tables="tables"
             :relations="relations"
             @drag-table="$emit('drag-table', $event)"
-            @edit="editableTable=$event" 
+            @edit-table="editableTableId=$event" 
+            @update:table-position="$emit('update:table-position', $event)"
         />
     </div>
 </template>
@@ -35,7 +36,7 @@ export default {
     },
     data(){
         return {
-            editableTable: null
+            editableTableId: null
         }
     },
     methods:{

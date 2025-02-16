@@ -36,6 +36,34 @@
                 pointer-events="none"
             />
 
+             <!-- Стрелки между объектами -->
+            <defs>
+                <marker
+                id="arrowhead"
+                markerWidth="10"
+                markerHeight="7"
+                refX="9"
+                refY="3.5"
+                orient="auto"
+                >
+                <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+                </marker>
+            </defs>
+
+            <g class="connections">
+                <path
+                v-for="relation in relations"
+                :key="relation.id"
+                :d="getConnectionPath(relation)"
+                stroke="#666"
+                stroke-width="1.5"
+                fill="none"
+                marker-end="url(#arrowhead)"
+                :data-source="relation.source"
+                :data-target="relation.target"
+                />
+            </g>
+
             <!-- Объекты таблиц -->
             <foreignObject
                 v-for="table in tables"
@@ -65,7 +93,11 @@ export default {
     components: { CanvasTableBlock },
     props: {
         tables: Array,
-        relations: Array
+        relations: {
+            type: Array,
+            default: () => [],
+            validator: (rels) => rels.every(r => r.source && r.target)
+        }
     },
     data() {
         return {
@@ -116,19 +148,17 @@ export default {
         },
         // Добавляем метод для обновления фона
         updateBackground() {
-            if (!this.$refs.svgCanvas) return;
-
-            if (this.bgUpdateRequested) return;
-            this.bgUpdateRequested = true;
-            
-            requestAnimationFrame(() => {
+            if (!this.bgUpdateRequested && this.$refs.svgCanvas) {
+                this.bgUpdateRequested = true;
+                requestAnimationFrame(() => {
                 const bgRect = this.$refs.svgCanvas.querySelector('#background-rect');
                 if (bgRect) {
-                    bgRect.setAttribute('x', this.viewBox.x - 1000);
-                    bgRect.setAttribute('y', this.viewBox.y - 1000);
+                    bgRect.setAttribute('x', Math.floor(this.viewBox.x / 100) * 100 - 1000);
+                    bgRect.setAttribute('y', Math.floor(this.viewBox.y / 100) * 100 - 1000);
                 }
                 this.bgUpdateRequested = false;
-            });
+                });
+            }
         },
         // Инициализация Resize Observer
         initResizeObserver() {
@@ -270,7 +300,42 @@ export default {
                 this.observer.disconnect();
                 this.observer = null;
             }
-        }
+        },
+
+            // Расчет пути для стрелки
+        getConnectionPath(relation) {
+            const sourceTable = this.tables.find(t => t.id === relation.source);
+            const targetTable = this.tables.find(t => t.id === relation.target);
+            if (!sourceTable || !targetTable) return '';
+
+            const start = this.getConnectionPoint(sourceTable, 'right');
+            const end = this.getConnectionPoint(targetTable, 'left');
+            const curvature = 80 * this.scale;
+
+            return `
+                M ${start.x},${start.y}
+                C ${start.x + curvature},${start.y}
+                ${end.x - curvature},${end.y}
+                ${end.x},${end.y}
+            `;
+        },
+
+        // Расчет точки соединения
+        getConnectionPoint(table, side) {
+            const width = 170 * this.scale;
+            const height = this.getBlockHeight(table);
+            
+            const centerY = table.y + height / 2;
+            
+            switch(side) {
+                case 'left':
+                return { x: table.x, y: centerY };
+                case 'right':
+                return { x: table.x + width, y: centerY };
+                default:
+                return { x: table.x + width/2, y: table.y + height };
+            }
+        },
     }
 };
 </script>
@@ -283,6 +348,7 @@ export default {
     cursor: grab;
     position: relative;
     contain: strict;
+    transform: translateZ(0);
     will-change: transform;
     overflow: hidden;
     background: #fffdfd;
@@ -298,10 +364,23 @@ svg {
 }
 
 foreignObject {
-    cursor: move;
+  will-change: transform;
+  transform: translateZ(0);
+  cursor: move;
 }
 
 pattern circle {
     shape-rendering: crispEdges;
+}
+
+.connections path {
+  pointer-events: none; /* Или 'stroke' для взаимодействия */
+  transition: d 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connections path {
+    transition: none;
+  }
 }
 </style>

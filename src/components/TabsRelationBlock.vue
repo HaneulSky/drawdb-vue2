@@ -5,19 +5,23 @@
         </div>
 
         <div class="relation-block-tables">
-            <select :value="relation.from" name="tableFirst" id="first-select">
+            <select 
+                v-model="localValue.source" 
+                name="tableFirst" 
+                id="first-select"
+            >
                 <option value="">-- Выберите таблицу --</option>
                 <option v-for="table in tables" :key="`first-${table.id}`" :value="table.id">{{ table.name }}</option>
             </select>
 
-            <select :value="relation.to" name="tableSecond" id="second-select">
+            <select v-model="localValue.target" name="tableSecond" id="second-select">
                 <option value="">-- Выберите таблицу --</option>
                 <option v-for="table in tables" :key="`second-${table.id}`" :value="table.id">{{ table.name }}</option>
             </select>
         </div>
         <div class="relation-types">
             <label for="relation-types-select">Тип связи</label>
-            <select :value="relation.type" name="relationType" id="relation-types-select">
+            <select v-model="localValue.type" name="relationType" id="relation-types-select">
                 <option value="">-- Выберите тип --</option>
                 <option value="manyToMany">Многие ко многим</option>
                 <option value="oneToOne">Один к одному</option>
@@ -48,7 +52,23 @@ export default {
     },
     computed: {
         relationName(){
-            return `${this.relation.from?.name || '(пусто)'} (${this.relation.type}) ${this.relation.to?.namee || '(пусто)'}`
+            return `${this.localValue.from?.name || '(пусто)'} (${this.localValue.type}) ${this.localValue.to?.namee || '(пусто)'}`
+        }
+    },
+    watch: {
+        relation: {
+            immediate: true,
+            deep: true,
+            handler(value){
+                this.localValue = value
+            }
+        },
+        localValue: {
+            deep: true,
+            handler(value){
+                if(JSON.stringify(value) === JSON.stringify(this.relation)) return;
+                this.$emit('input', value)
+            }
         }
     }
 }

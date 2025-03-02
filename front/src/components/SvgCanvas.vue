@@ -380,8 +380,8 @@ export default {
       if (!this.dragData.isDragging) return;
 
       if (this.dragData.type === 'table') {
-        this.$emit('update:table-position', {
-          table: this.dragData.activeItem,
+        this.$emit('update:table', {
+          ...this.dragData.activeItem,
         });
       } else if (this.dragData.type === 'relation-start' || this.dragData.type === 'relation-end') {
         this.$emit('update:relation-position', {

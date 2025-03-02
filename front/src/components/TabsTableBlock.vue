@@ -1,7 +1,11 @@
 <template>
   <div class="table-block">
     <div class="table-block-head">
-      <span>Имя:</span><input :value="table.name" >
+      <span>Имя:</span>
+      <input
+        :value="table.name"
+        @blur="$emit('update:table',{ id: table.id, name: $event.target.value })"
+      >
     </div>
     <div
       v-for="field in table.fields"
@@ -18,10 +22,13 @@
     <div>
       <details class="comment-collapse">
         <summary>Комментарий</summary>
-        <textarea :value="table.comment" />
+        <textarea
+          :value="table.comment"
+          @blur="$emit('update:table',{ id: table.id, comment: $event.target.value })"
+        />
       </details>
     </div>
-    <button>Добавить поле</button>
+    <button @click="$emit('create:field', {table: table.id})">Добавить поле</button>
   </div>
 </template>
 <script>
@@ -53,7 +60,7 @@ summary {
     cursor: pointer;
 }
 
-.commet-collapse:open summary {
+.comment-collapse:open summary {
     padding-bottom: 5px;
 }
 

@@ -25,7 +25,11 @@
         :open="editTableId === table.id"
       >
         <summary>{{ table.name || 'таблица' }}</summary>
-        <TabsTableBlock :table="table" />
+        <TabsTableBlock
+          :table="table"
+          @create:field="$emit('create:field',$event)"
+          @update:table="$emit('update:table',$event)"
+        />
       </details>
     </div>
   </div>

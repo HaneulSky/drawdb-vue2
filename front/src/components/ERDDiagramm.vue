@@ -6,15 +6,17 @@
       :edit-table-id="editableTableId"
       :datatypes="datatypes"
       @edit:table="$emit('edit-table', $event)"
-      @edit:relation="$emit('edit-ralation', $event)"
+      @edit:relation="$emit('edit-relation', $event)"
       @create:table="$emit('create:table')"
+      @update:table="$emit('update:table', $event)"
+      @create:field="$emit('create:field',$event)"
     />
     <SvgCanvas 
       :tables="tables"
       :relations="relations"
       @drag-table="$emit('drag-table', $event)"
       @edit:table="editableTableId=$event"
-      @update:table-position="$emit('update:table-position', $event)"
+      @update:table="$emit('update:table', $event)"
     />
   </div>
 </template>

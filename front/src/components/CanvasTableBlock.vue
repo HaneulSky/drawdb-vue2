@@ -3,8 +3,8 @@
     class="table-block"
     @mousedown="$emit('mousedown', $event)"
   >
-    <div class="table-block-header">
-      {{ tableData.name }}
+    <div class="table-block-header table-block-row">
+      <span>{{ tableData.name }}</span>
       <button 
         class="material-icons"
         @click="$emit('edit:table', tableData.id)"
@@ -19,13 +19,10 @@
       <div
         v-for="field in tableData[fieldsName]"
         :key="field.id"
-        class="table-block-data-field"
+        class="table-block-data-field table-block-row"
       >
-        <button
-          class="field-indicator"
-          @click="$emit('start-relation')"/>
-        <span>{{ field.name }}</span>
-        <span>{{ field.type }}</span>
+        <span class="table-block-data-field-name">{{ field.name }}</span>
+        <span class="table-block-data-field-type">{{ field.datatype?.name }}</span>
       </div>
     </div>
   </div>
@@ -47,51 +44,52 @@ export default {
 </script>
 <style scoped>
 .table-block {
-    width: 100%;
-    height: auto;
-    border: 1px solid #494949;
-    border-radius: 5px;
-    box-sizing: border-box;
-    background: white;
-    cursor: move;
-    pointer-events: all;
+  width: 100%;
+  height: auto;
+  border: 1px solid #494949;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background: white;
+  cursor: move;
+  pointer-events: all;
 }
 
 .table-block:hover {
-    border: 1px dashed #3f496a;
+  border: 1px dashed #3f496a;
+}
+
+.table-block-row {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
 }
 
 .table-block-header {
-    background: #dadada;
-    height: 40px;
+  background: #dadada;
 }
 
 button {
-    width: 17px;
-    height: 17px;
-    font-size: 15px;
-    padding: 0;
-    background: none;
-    border: none;
-    z-index: 1;
-    cursor: pointer;
-}
-
-.field-indicator {
-    min-width: 10px;
-    max-width: 10px;
-    min-height: 10px;
-    max-height: 10px;
-    border-radius: 100%;
-    background-color: crimson;
+  width: 17px;
+  height: 17px;
+  font-size: 15px;
+  padding: 0;
+  background: none;
+  border: none;
+  z-index: 1;
+  cursor: pointer;
 }
 
 .table-block-data-field {
-    border-bottom: 1px solid #494949;
-    height: 40px;
+  border-bottom: 1px solid #494949;
 }
 
 .table-block-data-field:last-child {
-    border: none;
+  border: none;
+}
+
+.table-block-data-field-type {
+  color: grey;
 }
 </style>

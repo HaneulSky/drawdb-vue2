@@ -23,6 +23,8 @@
         :edit-table-id="editTableId"
         :datatypes="notRelationDatatypes"
         @create:table="$emit('create:table')"
+        @update:table="$emit('update:table', $event)"
+        @create:field="$emit('create:field',$event)"
       />
       <RelationsTab
         v-show="currentTab === 1"
@@ -38,7 +40,6 @@
 <script>
 import TablesTab from './TablesTab.vue';
 import RelationsTab from './RelationsTab.vue';
-
 
 export default {
   name: 'ErdToolbar',
@@ -60,7 +61,7 @@ export default {
       default: () => ([])
     },
   },
-  components: { TablesTab, RelationsTab},
+  components: {TablesTab, RelationsTab},
   data() {
     return {
       currentTab: 0

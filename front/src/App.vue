@@ -5,9 +5,11 @@
       :relations="relations"
       :datatypes="datatypes"
       @create:table="addTable"
-      @create:relation="addTable"
-      @update:relation="addTable"
-      @update:table-position="updateTables"
+      @create:relation="addRelation"
+      @update:relation="updateRelation"
+      @update:table="updateTable"
+      @create:field="createField"
+      @update:field="createField"
     />
   </div>
 </template>
@@ -16,7 +18,7 @@
 import ErdDiagramm from './components/ERDDiagramm.vue';
 
 export default {
-  components: { ERDDiagramm: ErdDiagramm },
+  components: {ERDDiagramm: ErdDiagramm },
   data() {
     return {
       tables: [
@@ -169,17 +171,35 @@ export default {
     };
   },
   methods: {
-    updateTables({ table }){
+    updateTable(table){
+      console.log(table);
       const tableIndex = this.tables.findIndex(t => t.id === table.id);
-      this.tables[tableIndex] = {...this.tables[tableIndex], ...table}
+      this.tables[tableIndex] = {...this.tables[tableIndex], ...table};
+      console.log(this.tables);
+    },
+    createField({ table }){
+      console.log(table);
+      const tableIndex = this.tables.findIndex(t => t.id === table);
+      this.tables[tableIndex].fields.push({id: (this.tables[tableIndex].fields?.length || 0 )+ 1, name: 'someField'});
+    },
+    updateField(data){
+      console.log('updateField', data);
+      // const tableIndex = this.tables.findIndex(t => t.id === table);
+      // this.tables[tableIndex].fields.push({id: (this.tables[tableIndex].fields?.length || 0 )+ 1, name: 'someField'});
+    },
+    updateRelation(data){
+      console.log('updateRelation', data);
+    },
+    addRelation(data){
+      console.log('addRelation', data);
     },
     addTable() {
       this.tables.push({
         id: (this.tables.length || 0) + 1,
         name: `New Table ${(this.tables.length || 0) + 1}`,
         comment: 'Это очень важная таблица, она нужна для существования таблицы ради таблицы',
-        x: 10,
-        y: 25,
+        xAxis: 10,
+        yAxis: 25,
         relations: [],
         fields: [
           {

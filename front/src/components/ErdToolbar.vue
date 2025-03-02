@@ -22,14 +22,15 @@
         :tables="tables"
         :edit-table-id="editTableId"
         :datatypes="notRelationDatatypes"
-        @add-new-table="$emit('add-new-table')"
+        @create:table="$emit('create:table')"
       />
       <RelationsTab
         v-show="currentTab === 1"
         :relations="relations"
         :tables="tables"
         :datatypes="relationDatatypes"
-        @add-new-relation="$emit('add-new-table', $event)"
+        @create:relation="$emit('create:relation', $event)"
+        @update:relation="$emit('update:relation', $event)"
       />
     </div>
   </div>

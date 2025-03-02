@@ -1,30 +1,30 @@
 # drawdb-vue2
 
 TODO:
-- настроить генерацию связей между таблицами, 
-- добавление полей
+- настроить генерацию связей между таблицами,
 - деплой,
 - бэк
 - стили
+- докер
 
 ## Project setup
 ```
-yarn install
+cd front && yarn install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+cd fron && yarn serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn build
+cd front && yarn build
 ```
 
 ### Lints and fixes files
 ```
-yarn lint
+cd front && yarn lint
 ```
 
 ### Customize configuration

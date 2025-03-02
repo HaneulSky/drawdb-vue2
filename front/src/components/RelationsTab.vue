@@ -28,6 +28,7 @@
           :relation="relation"
           :tables="tables"
           :datatypes="datatypes"
+          @update:relation="$emit('update:relation', $event)"
         />
       </details>
     </div>

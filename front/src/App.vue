@@ -4,7 +4,9 @@
       :tables="tables"
       :relations="relations"
       :datatypes="datatypes"
-      @add-new-table="addTable"
+      @create:table="addTable"
+      @create:relation="addTable"
+      @update:relation="addTable"
       @update:table-position="updateTables"
     />
   </div>

@@ -5,15 +5,15 @@
       :relations="relations" 
       :edit-table-id="editableTableId"
       :datatypes="datatypes"
-      @edit-table="$emit('edit-table', $event)"
-      @edit-relation="$emit('edit-ralation', $event)"
-      @add-new-table="$emit('add-new-table')"
+      @edit:table="$emit('edit-table', $event)"
+      @edit:relation="$emit('edit-ralation', $event)"
+      @create:table="$emit('create:table')"
     />
     <SvgCanvas 
       :tables="tables"
       :relations="relations"
       @drag-table="$emit('drag-table', $event)"
-      @edit-table="editableTableId=$event" 
+      @edit:table="editableTableId=$event"
       @update:table-position="$emit('update:table-position', $event)"
     />
   </div>
@@ -44,9 +44,6 @@ export default {
       editableTableId: null
     }
   },
-  methods:{
-
-  }
 }
 </script>
 <style scoped>

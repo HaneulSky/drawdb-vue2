@@ -10,7 +10,7 @@
       >
       <button
         class="add-table-btn"
-        @click="$emit('add-new-table')"
+        @click="$emit('create:table')"
       >
         Добавить таблицу
       </button>

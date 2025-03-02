@@ -131,8 +131,9 @@ export default {
     localValue: {
       deep: true,
       handler(value){
-        // if(JSON.stringify(value) === JSON.stringify(this.relation)) return;
-        this.$emit('input', value)
+        if(value.source && value.target && value.datatype && value.sourceField && value.targetField) {
+          this.$emit('update:relation', value)
+        }
       }
     }
   }

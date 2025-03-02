@@ -7,15 +7,9 @@
       {{ tableData.name }}
       <button 
         class="material-icons"
-        @click="$emit('edit', tableData.id)"
+        @click="$emit('edit:table', tableData.id)"
       >
         edit
-      </button>
-      <button 
-        class="material-icons" 
-        @click="$emit('more-info')"
-      >
-        more_horiz
       </button>
     </div>
     <div
@@ -49,11 +43,6 @@ export default {
       default: 'fields'
     },
   },
-  data(){
-    return {
-            
-    }
-  }
 }
 </script>
 <style scoped>

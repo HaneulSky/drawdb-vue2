@@ -11,10 +11,10 @@
 </template>
 
 <script>
-import ERDDiagramm from './components/Main.vue';
+import ErdDiagramm from './components/ERDDiagramm.vue';
 
 export default {
-  components: { ERDDiagramm },
+  components: { ERDDiagramm: ErdDiagramm },
   data() {
     return {
       tables: [
@@ -78,11 +78,81 @@ export default {
       relations: [
         {
           id: 1,
-          source: {id: 1},
-          target: {id: 2},
+          source:         {
+            id: 1,
+            name: 'User',
+            comment: 'Это очень важная таблица, она нужна для существования таблицы ради таблицы',
+            xAxis: 10,
+            yAxis: 25,
+            relations: [],
+            fields: [
+              {
+                id: 1,
+                name: 'id',
+                datatype: {id: 5, name: 'int'},
+                nullable: false,
+                unique: true,
+                increment: true,
+                comment: null
+              },
+              {
+                id: 2,
+                datatype: {id: 1, name: 'OtM'},
+                name: 'roles',
+                nullable: false,
+                unique: true,
+                increment: true,
+                comment: null
+              },
+            ]
+          },
+          target: {
+            id: 2,
+            name: 'Role',
+            comment: 'Это очень важная таблица, она нужна для существования таблицы ради таблицы',
+            xAxis: 210,
+            yAxis: 225,
+            relations: [],
+            fields: [
+              {
+                id: 1,
+                name: 'id',
+                datatype: {id: 5, name: 'int'},
+                nullable: false,
+                unique: true,
+                increment: true,
+                comment: null
+              },
+              {
+                id: 2,
+                name: 'users',
+                datatype: {id: 2, name: 'MtO'},
+                nullable: false,
+                unique: true,
+                increment: true,
+                comment: null
+              },
+            ]
+          },
           datatype: {id: 1, name: 'OtM'},
-          sourceField: {id: 2, name: 'roles'},
-          targetField: {id: 2, name: 'users'},
+          sourceField: {
+            id: 2,
+            datatype: {id: 1, name: 'OtM'},
+            name: 'roles',
+            nullable: false,
+            unique: true,
+            increment: true,
+            comment: null
+          },
+          targetField: {
+            id: 2,
+            name: 'users',
+            datatype: {id: 2, name: 'MtO'},
+            nullable: false,
+            unique: true,
+            increment: true,
+            comment: null
+          },
         }
       ],
       datatypes: [

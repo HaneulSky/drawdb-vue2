@@ -9,10 +9,6 @@
     <div class="scale-value">
       <button
         class="material-icons"
-        height="20" 
-        width="20"
-        icon
-        tile
         :disabled="scale===maxScale"
         @click="onScaleButton('plus')"
       >
@@ -21,10 +17,6 @@
       {{ `${Math.round(100 * scale)}%` }}
       <button
         class="material-icons"
-        height="20"
-        width="20"
-        icon
-        tile
         :disabled="scale===minScale"
         @click="onScaleButton('minus')"
       >

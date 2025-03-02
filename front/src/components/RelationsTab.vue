@@ -23,7 +23,7 @@
         :key="relation.id" 
         :open="editRelation.id === relation.id"
       >
-        <summary>{{`${relation.from?.name || '(пусто)'} (${relation.type}) ${relation.to?.name || '(пусто)'}` || 'new relation' }}</summary>
+        <summary>{{`${relation.source?.name || '(from)'} (${relation.datatype?.name || 'type'}) ${relation.target?.name || '(to)'}`}}</summary>
         <TabsRelationBlock
           :relation="relation"
           :tables="tables"

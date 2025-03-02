@@ -67,10 +67,10 @@ export default {
   },
   computed:{
     relationDatatypes(){
-      return this.datatypes.filter((type => [type.name].includes(['OtO', 'MtM', 'MtO', 'OtM'])))
+      return this.datatypes.filter((type => ['OtO', 'MtM', 'MtO', 'OtM'].includes(type.name)))
     },
     notRelationDatatypes(){
-      return this.datatypes.filter((type => ![type.name].includes(['OtO', 'MtM', 'MtO', 'OtM'])))
+      return this.datatypes.filter((type => ['OtO', 'MtM', 'MtO', 'OtM'].includes(type.name)))
     }
   },
   methods: {

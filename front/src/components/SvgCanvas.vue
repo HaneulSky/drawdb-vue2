@@ -12,7 +12,7 @@
         :disabled="scale===maxScale"
         @click="onScaleButton('plus')"
       >
-        add
+        +
       </button>
       {{ `${Math.round(100 * scale)}%` }}
       <button
@@ -20,8 +20,7 @@
         :disabled="scale===minScale"
         @click="onScaleButton('minus')"
       >
-
-        remove
+        -
       </button>
     </div>
     <svg
@@ -49,16 +48,6 @@
         />
       </pattern>
 
-      <!-- Фоновая заливка -->
-      <rect
-        :x="viewBox.x - 1000"
-        :y="viewBox.y - 1000"
-        :width="viewBox.width + 1000"
-        :height="viewBox.height + 1000"
-        fill="url(#bg-pattern)"
-        pointer-events="none"
-      />
-
       <defs>
         <symbol
           id="arrow-template"
@@ -66,7 +55,7 @@
         >
           <path
             d="M1 17L17 8.5M17 8.5L1 1M17 8.5H1"
-            stroke="#888A90" 
+            stroke="#888A90"
             stroke-linejoin="round"
             stroke-width="1.5"
           />
@@ -120,6 +109,16 @@
         </marker>
       </defs>
 
+
+      <!-- Фоновая заливка -->
+      <rect
+        :x="viewBox.x - 1000"
+        :y="viewBox.y - 1000"
+        :width="viewBox.width + 1000"
+        :height="viewBox.height + 1000"
+        fill="url(#bg-pattern)"
+        pointer-events="none"
+      />
       <g class="connections">
         <path
           v-for="relation in relationsData"
@@ -703,14 +702,14 @@ pattern circle {
 }
 
 button {
-        width: 17px;
-    height: 17px;
-    font-size: 15px;
-    padding: 0;
-    background: none;
-    border: none;
-    z-index: 1;
-    cursor: pointer;
+  width: 17px;
+  height: 17px;
+  font-size: 15px;
+  padding: 0;
+  background: none;
+  border: none;
+  z-index: 1;
+  cursor: pointer;
 }
 
 @media (prefers-reduced-motion: reduce) {

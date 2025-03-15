@@ -50,9 +50,9 @@ export default {
 </script>
 <style scoped>
 .erd-container {
-    display: grid;
-    grid-template-columns: 25% 75%;
-    width: 100%;
-    overflow: hidden;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  width: 100%;
+  overflow: hidden;
 }
 </style>

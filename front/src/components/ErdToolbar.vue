@@ -85,36 +85,40 @@ export default {
 </script>
 <style scoped>
 .erd-toolbar {
-    border-right: 1px solid #dadada;
-    width: 100%;
+  border-right: 1px solid #dadada;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .tabs {
-    height: 45px;
-    display: grid;
-    grid-template-columns: 50% 50%;
+  height: 45px;
+  display: grid;
+  grid-template-columns: 50% 50%;
 }
 
 .tab {
-    cursor: pointer;
-    border: none;
-    background: none;
-    border-bottom: 3px solid;
-    border-bottom-color: white;
-    transition: background .5s ease-in-out, border-bottom-color .5s ease;
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 3px solid;
+  border-bottom-color: white;
+  transition: background .5s ease-in-out, border-bottom-color .5s ease;
 }
 
 .tab.current {
-    border-bottom-color: rgb(126, 126, 238);
+  border-bottom-color: rgb(126, 126, 238);
 }
 
 .tab:hover {
-    background: rgb(233, 250, 255);
-    border-bottom-color: #dadada;
+  background: rgb(233, 250, 255);
+  border-bottom-color: #dadada;
 }
 
 .tabs-container {
-    position: relative;
-    padding: 10px;
+  overflow: auto;
+  max-height: calc(100vh - 75px);
+  position: relative;
+  padding: 10px;
 }
 </style>

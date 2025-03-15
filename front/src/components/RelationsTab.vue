@@ -86,43 +86,52 @@ export default {
 }
 </script>
 <style scoped>
+.relations-tab-container{
+  height: 100%;
+}
+
 .relations-tab-head {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    width: 100%;
-    margin-bottom: 25px;
-    position: sticky;
-    top: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 25px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+.relations-tab-relations {
+  max-height: 100%;
 }
 
 .add-relation-btn {
-    cursor: pointer;
-    border: 1px solid #3f496a;
-    min-height: 24px;
+  cursor: pointer;
+  border: 1px solid #3f496a;
+  min-height: 24px;
 }
 
 .relations-search-input {
-    width: 100%;
+  width: 100%;
 }
 
 summary {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 details:open summary {
-    border-bottom: 1px dashed #3f496a;
-    padding-bottom: 5px;
+  border-bottom: 1px dashed #3f496a;
+  padding-bottom: 5px;
 }
 
 details {
-    border: 1px solid #494949;
-    border-radius: 5px;
-    padding: 5px;
-    margin-bottom: 10px;
+  border: 1px solid #494949;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
 }
 
 details:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 </style>

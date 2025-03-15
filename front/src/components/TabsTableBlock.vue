@@ -44,49 +44,49 @@ export default {
 </script>
 <style scoped>
 .table-block {
-    padding: 15px 0;
+  padding: 15px 0;
 }
 
 .table-block-head {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 5px;
-    align-items: center;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+  align-items: center;
 }
 
 summary {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .comment-collapse:open summary {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 details {
-    border: 1px solid #494949;
-    border-radius: 5px;
-    padding: 5px;
-    margin-bottom: 10px;
+  border: 1px solid #494949;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
 }
 
 .table-block-head span {
-    display: inline-block;
-    color: #494949;
-    font-size: 18px;
-    width: 40px;
+  display: inline-block;
+  color: #494949;
+  font-size: 18px;
+  width: 40px;
 }
 
 .table-block-head input {
-    outline: none;
-    border: none;
-    border-bottom: 1px solid #494949;
-    transition: border-bottom .2px ease;
-    width: 100%;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #494949;
+  transition: border-bottom .2px ease;
+  width: 100%;
 }
 
 .table-block-head input:focus {
-    border-bottom:  1px solid #3f496a;
+  border-bottom:  1px solid #3f496a;
 }
 </style>

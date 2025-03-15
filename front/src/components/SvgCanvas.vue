@@ -49,18 +49,7 @@
       </pattern>
 
       <defs>
-        <symbol
-          id="arrow-template"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M1 17L17 8.5M17 8.5L1 1M17 8.5H1"
-            stroke="#888A90"
-            stroke-linejoin="round"
-            stroke-width="1.5"
-          />
-        </symbol>
-        <!-- Маркер для Many (M) справа -->
+        <!-- Маркер для "Многие" (M) справа -->
         <marker
           id="arrowhead-many"
           markerWidth="16"
@@ -68,14 +57,16 @@
           refX="15"
           refY="8.5"
           orient="auto"
-          markerUnits="userSpaceOnUse"
+          markerUnits="strokeWidth"
         >
-          <use
-            href="#arrow-template"
-            transform="rotate(180 9 8.5)"
+          <path
+            d="M1 17L17 8.5M17 8.5L1 1M17 8.5H1"
+            stroke="#888A90"
+            stroke-linejoin="round"
+            stroke-width="1.5"
           />
         </marker>
-        <!-- Маркер для Many (M) слева -->
+        <!-- Маркер для "Многие" (M) слева -->
         <marker
           id="arrowhead-many-left"
           markerWidth="16"
@@ -83,14 +74,17 @@
           refX="15"
           refY="8.5"
           orient="auto-start-reverse"
-          markerUnits="userSpaceOnUse"
+          markerUnits="strokeWidth"
         >
-          <use
-            href="#arrow-template"
+          <path
+            d="M1 17L17 8.5M17 8.5L1 1M17 8.5H1"
+            stroke="#888A90"
+            stroke-linejoin="round"
+            stroke-width="1.5"
             transform="rotate(180 9 8.5)"
           />
         </marker>
-        <!-- Маркер для One (O) -->
+        <!-- Маркер для "Один" (O) -->
         <marker
           id="crossbar-one"
           markerWidth="16"
@@ -130,31 +124,6 @@
           :marker-start="getMarkerStart(relation)"
           :marker-end="getMarkerEnd(relation)"
           @dblclick="$emit('edit:relation', relation.id)"
-        />
-        <!-- Добавляем круги для перетаскивания наконечников -->
-        <circle
-          v-for="relation in relationsData"
-          :key="`${relation.id}-start`"
-          :cx="getConnectionPoint(getTable(relation.source.id), getSide(relation, true), relation, true).x"
-          :cy="getConnectionPoint(getTable(relation.source.id), getSide(relation, true), relation, true).y"
-          r="5"
-          fill="transparent"
-          stroke="#888A90"
-          stroke-width="1"
-          class="connection-handle"
-          @mousedown="startRelationDrag($event, relation, 'start')"
-        />
-        <circle
-          v-for="relation in relationsData"
-          :key="`${relation.id}-end`"
-          :cx="getConnectionPoint(getTable(relation.target.id), getSide(relation, false), relation, false).x"
-          :cy="getConnectionPoint(getTable(relation.target.id), getSide(relation, false), relation, false).y"
-          r="5"
-          fill="transparent"
-          stroke="#888A90"
-          stroke-width="1"
-          class="connection-handle"
-          @mousedown="startRelationDrag($event, relation, 'end')"
         />
       </g>
 
@@ -224,7 +193,6 @@ export default {
         offsetX: 0,
         offsetY: 0,
         type: null,
-        relation: null,
       },
       observer: null,
       bgUpdateRequested: false,
@@ -324,77 +292,36 @@ export default {
         relation: null,
       };
     },
-    startRelationDrag(event, relation, endType) {
-      if (this.panning.isPanning) return;
-      this.dragData = {
-        isDragging: true,
-        activeItem: relation,
-        offsetX: 0, // Наконечник связи не имеет собственных координат
-        offsetY: 0,
-        type: endType === 'start' ? 'relation-start' : 'relation-end',
-        relation: relation,
-      };
-      event.stopPropagation();
-    },
     handleDrag(event) {
+      // Заменяем на эту упрощенную версию
+      // Если перетаскивание не активно, ничего не делаем
       if (!this.dragData.isDragging) return;
-
       const svgPoint = this.getSVGCoordinates(event);
-
+      // Обрабатываем только перетаскивание таблиц
       if (this.dragData.type === 'table') {
         const newX = svgPoint.x - this.dragData.offsetX;
         const newY = svgPoint.y - this.dragData.offsetY;
         this.dragData.activeItem.xAxis = newX;
         this.dragData.activeItem.yAxis = newY;
-      } else if (this.dragData.type === 'relation-start' || this.dragData.type === 'relation-end') {
-        const relation = this.dragData.activeItem;
-        const isStart = this.dragData.type === 'relation-start';
-        const table = this.findClosestTable(svgPoint);
-        if (table) {
-          const field = this.findClosestField(table, svgPoint);
-          if (field) {
-            const updatedRelation = { ...relation };
-            if (isStart) {
-              updatedRelation.source.id = table.id;
-              updatedRelation.sourceField = {
-                id: field.id,
-                name: field.name,
-              };
-            } else {
-              updatedRelation.target.id = table.id;
-              updatedRelation.targetField = {
-                id: field.id,
-                name: field.name,
-              };
-            }
-            const index = this.relationsData.findIndex(r => r.id === relation.id);
-            if (index !== -1) {
-              this.$set(this.relationsData, index, updatedRelation);
-            }
-          }
-        }
       }
     },
     stopDrag() {
+      // Заменяем на эту упрощенную версию
+      // Если перетаскивание не активно, ничего не делаем
       if (!this.dragData.isDragging) return;
-
+      // Обновляем только таблицы
       if (this.dragData.type === 'table') {
         this.$emit('update:table', {
           ...this.dragData.activeItem,
         });
-      } else if (this.dragData.type === 'relation-start' || this.dragData.type === 'relation-end') {
-        this.$emit('update:relation-position', {
-          relation: this.dragData.activeItem,
-        });
       }
-
+      // Сбрасываем данные перетаскивания
       this.dragData = {
         isDragging: false,
         activeItem: null,
         offsetX: 0,
         offsetY: 0,
         type: null,
-        relation: null,
       };
     },
     handleSvgMouseDown(event) {
@@ -601,24 +528,6 @@ export default {
         return isSourceAbove && relation.datatype.name === 'OtO' ? 'left' : 'right';
       }
       return isSource ? (isSourceLeft ? 'right' : 'left') : (isSourceLeft ? 'left' : 'right');
-    },
-    findClosestTable(point) {
-      return this.tables.reduce((closest, table) => {
-        const dx = point.x - (table.xAxis + this.tableWidth / 2);
-        const dy = point.y - (table.yAxis + this.getBlockHeight(table) / 2);
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        return !closest || distance < closest.distance ? { table, distance } : closest;
-      }, null)?.table;
-    },
-    findClosestField(table, point) {
-      return table.fields.reduce((closest, field) => {
-        const fieldIndex = table.fields.findIndex(f => f.name === field.name);
-        const yPosition = table.yAxis + 40 + fieldIndex * 40 + 20;
-        const dx = point.x - (table.xAxis + this.tableWidth / 2);
-        const dy = point.y - yPosition;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        return !closest || distance < closest.distance ? { field, distance } : closest;
-      }, null)?.field;
     },
   },
 };

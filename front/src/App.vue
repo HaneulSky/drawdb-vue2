@@ -82,7 +82,7 @@ export default {
       relations: [
         {
           id: 1,
-          source:         {
+          source: {
             id: 1,
             name: 'User',
             comment: 'Это очень важная таблица, она нужна для существования таблицы ради таблицы',

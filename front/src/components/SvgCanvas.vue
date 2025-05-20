@@ -8,7 +8,6 @@
   >
     <div class="scale-value">
       <button
-        class="material-icons"
         :disabled="scale===maxScale"
         @click="onScaleButton('plus')"
       >
@@ -16,7 +15,6 @@
       </button>
       {{ `${Math.round(100 * scale)}%` }}
       <button
-        class="material-icons"
         :disabled="scale===minScale"
         @click="onScaleButton('minus')"
       >
@@ -293,7 +291,6 @@ export default {
       };
     },
     handleDrag(event) {
-      // Заменяем на эту упрощенную версию
       // Если перетаскивание не активно, ничего не делаем
       if (!this.dragData.isDragging) return;
       const svgPoint = this.getSVGCoordinates(event);
@@ -306,7 +303,6 @@ export default {
       }
     },
     stopDrag() {
-      // Заменяем на эту упрощенную версию
       // Если перетаскивание не активно, ничего не делаем
       if (!this.dragData.isDragging) return;
       // Обновляем только таблицы
@@ -325,7 +321,7 @@ export default {
       };
     },
     handleSvgMouseDown(event) {
-      if (event.target.closest('foreignObject') || event.target.classList.contains('connection-handle')) return;
+      if (event.target.closest('foreignObject')) return;
       this.panning = {
         isPanning: true,
         startX: event.clientX,
@@ -388,9 +384,14 @@ export default {
         this.observer = null;
       }
     },
+    getTablesByRelations(relation){
+      const sourceTable = relation.source ? this.tables.find(t => t.id === relation.source.id) : null;
+      const targetTable = relation.target ? this.tables.find(t => t.id === relation.target.id) : null;
+
+      return { sourceTable, targetTable };
+    },
     getMarkerEnd(relation) {
-      const sourceTable = this.tables.find(t => t.id === relation.source.id);
-      const targetTable = this.tables.find(t => t.id === relation.target.id);
+      const { sourceTable, targetTable} = this.getTablesByRelations(relation);
       if (!sourceTable || !targetTable) return '';
       const visualTableWidth = this.tableWidth;
       const sourceVisualCenter = sourceTable.xAxis + visualTableWidth / 2;
@@ -398,20 +399,19 @@ export default {
       const isSourceLeft = sourceVisualCenter < targetVisualCenter;
       const isSourceAbove = sourceTable.yAxis > targetTable.yAxis;
       const isSameXAxis = Math.abs(sourceTable.xAxis - targetTable.xAxis) <= this.tableWidth;
-      const relationType = relation.datatype.name;
+      const relationType = relation.datatype?.name;
       if (relationType === 'MtM') return isSourceLeft ? 'url(#arrowhead-many)' : 'url(#arrowhead-many-left)';
       if (relationType === 'MtO') return (isSourceAbove && !isSameXAxis) || !isSourceAbove ? 'url(#crossbar-one)' : 'url(#arrowhead-many-left)';
       if (relationType === 'OtM') return (isSourceAbove && !isSameXAxis) || !isSourceAbove ? 'url(#arrowhead-many-left)' : 'url(#crossbar-one)';
       return 'url(#crossbar-one)';
     },
     getMarkerStart(relation) {
-      const sourceTable = this.tables.find(t => t.id === relation.source.id);
-      const targetTable = this.tables.find(t => t.id === relation.target.id);
+      const { sourceTable, targetTable} = this.getTablesByRelations(relation);
       if (!sourceTable || !targetTable) return '';
       const isSourceAbove = sourceTable.yAxis > targetTable.yAxis;
       const isSameXAxis = Math.abs(sourceTable.xAxis - targetTable.xAxis) <= this.tableWidth;
 
-      const relationType = relation.datatype.name;
+      const relationType = relation.datatype?.name;
       if (relationType === 'MtM') return 'url(#arrowhead-many-left)';
       if (relationType === 'MtO') return isSourceAbove && isSameXAxis ? 'url(#crossbar-one)' : 'url(#arrowhead-many-left)';
       if (relationType === 'OtM') return isSourceAbove && isSameXAxis ? 'url(#arrowhead-many-left)' : 'url(#crossbar-one)';
@@ -424,7 +424,7 @@ export default {
       const baseX = table.xAxis;
       const baseY = table.yAxis;
       let yPosition;
-      const fieldName = isSource ? relation.sourceField.name : relation.targetField.name;
+      const fieldName = isSource ? relation.sourceField?.name : relation.targetField?.name;
       const field = table.fields.find(f => f.name === fieldName);
       if (field) {
         const fieldIndex = table.fields.findIndex(f => f.name === fieldName);
@@ -443,8 +443,7 @@ export default {
       }
     },
     getConnectionPath(relation) {
-      const sourceTable = this.tables.find(t => t.id === relation.source.id);
-      const targetTable = this.tables.find(t => t.id === relation.target.id);
+      const { sourceTable, targetTable} = this.getTablesByRelations(relation);
       if (!sourceTable || !targetTable) return '';
       const visualTableWidth = this.tableWidth;
       const isSameXAxis = Math.abs(sourceTable.xAxis - targetTable.xAxis) <= visualTableWidth;
@@ -462,7 +461,7 @@ export default {
         const topPoint = this.getConnectionPoint(topTable, side, relation, topTable.id === relation.source.id);
         const bottomPoint = this.getConnectionPoint(bottomTable, side, relation, bottomTable.id === relation.source.id);
         const midX = Math.max(topTable.xAxis + visualTableWidth, bottomTable.xAxis + visualTableWidth) + offset;
-        if (relation.datatype.name === 'OtO' ||  (relation.datatype.name === 'MtO' && !isSourceAbove) || (relation.datatype.name === 'OtM' && isSourceAbove)) topPoint.x += 15;
+        if (relation.datatype?.name === 'OtO' ||  (relation.datatype?.name === 'MtO' && !isSourceAbove) || (relation.datatype?.name === 'OtM' && isSourceAbove)) topPoint.x += 15;
         const yDistance = Math.abs(bottomTable.yAxis - topPoint.y);
         const radius = Math.min(baseRadius, yDistance / 2);
         const path = `
@@ -481,8 +480,8 @@ export default {
       const end = this.getConnectionPoint(targetTable, targetSide, relation, false);
       const midX = (start.x + end.x) / 2;
 
-      if ((relation.datatype.name === 'OtO' || relation.datatype.name === 'OtM') && targetSide === 'left') start.x += 15;
-      if ((relation.datatype.name === 'OtO' || relation.datatype.name === 'OtM') && targetSide === 'right') start.x -= 15;
+      if ((relation.datatype?.name === 'OtO' || relation.datatype?.name === 'OtM') && targetSide === 'left') start.x += 15;
+      if ((relation.datatype?.name === 'OtO' || relation.datatype?.name === 'OtM') && targetSide === 'right') start.x -= 15;
       if (start.y === end.y) {
         return `
           M ${start.x},${start.y}
@@ -510,24 +509,6 @@ export default {
           L ${end.x},${end.y}`
         ;
       return path.trim();
-    },
-    getTable(id) {
-      return this.tables.find(t => t.id === id);
-    },
-    getSide(relation, isSource) {
-      const sourceTable = this.tables.find(t => t.id === relation.source.id);
-      const targetTable = this.tables.find(t => t.id === relation.target.id);
-      if (!sourceTable || !targetTable) return 'right';
-      const visualTableWidth = this.tableWidth;
-      const sourceVisualCenterX = sourceTable.xAxis + visualTableWidth / 2;
-      const targetVisualCenterX = targetTable.xAxis + visualTableWidth / 2;
-      const isSourceLeft = sourceVisualCenterX < targetVisualCenterX;
-      const isSourceAbove = sourceTable.yAxis < targetTable.yAxis;
-      const isSameXAxis = Math.abs(sourceTable.xAxis - targetTable.xAxis) <= visualTableWidth;
-      if (isSameXAxis) {
-        return isSourceAbove && relation.datatype.name === 'OtO' ? 'left' : 'right';
-      }
-      return isSource ? (isSourceLeft ? 'right' : 'left') : (isSourceLeft ? 'left' : 'right');
     },
   },
 };
@@ -599,15 +580,6 @@ pattern circle {
 .connections path:hover {
   stroke: blue;
   box-shadow: 0 0 1px 1px #dadada;
-}
-
-.connection-handle {
-  cursor: pointer;
-}
-
-.connection-handle:hover {
-  fill: #888A90;
-  opacity: 0.5;
 }
 
 button {

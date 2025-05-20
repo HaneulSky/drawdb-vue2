@@ -28,7 +28,16 @@
         />
       </details>
     </div>
-    <button @click="$emit('create:field', {table: table.id})">Добавить поле</button>
+    <button
+      @click="$emit('create:field', {table: table.id})"
+    >
+      Добавить поле
+    </button>
+    <button
+      @click="$emit('delete:table', {table: table.id})"
+    >
+      Удалить таблицу
+    </button>
   </div>
 </template>
 <script>
@@ -45,6 +54,9 @@ export default {
 <style scoped>
 .table-block {
   padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .table-block-head {

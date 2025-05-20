@@ -29,6 +29,7 @@
           :tables="tables"
           :datatypes="datatypes"
           @update:relation="$emit('update:relation', $event)"
+          @delete:relation="$emit('delete:relation', $event)"
         />
       </details>
     </div>

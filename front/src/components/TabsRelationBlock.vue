@@ -91,6 +91,11 @@
         </option>
       </select>
     </div>
+    <button
+      @click="$emit('delete:relation', {relation: relation.id})"
+    >
+      Удалить связь
+    </button>
   </div>
 </template>
 <script>

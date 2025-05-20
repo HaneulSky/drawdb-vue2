@@ -7,7 +7,9 @@
       @create:table="addTable"
       @create:relation="addRelation"
       @update:relation="updateRelation"
+      @delete:relation="deleteRelation"
       @update:table="updateTable"
+      @delete:table="deleteTable"
       @create:field="createField"
       @update:field="createField"
     />
@@ -177,6 +179,17 @@ export default {
       this.tables[tableIndex] = {...this.tables[tableIndex], ...table};
       console.log(this.tables);
     },
+    deleteRelation({ relation }){
+      const relationIndex = this.relations.findIndex(rel => rel.id === relation.id);
+      this.relations.splice(relationIndex, 1);
+    },
+    deleteTable({ table }){
+      const relationIndex = this.relations.findIndex(rel => rel.target?.id === table.id || rel.source?.id === table.id );
+      if (relationIndex !== -1) this.relations.splice(relationIndex, 1);
+      const tableIndex = this.tables.findIndex(t => t.id === table);
+      console.log('deleting', tableIndex);
+      this.tables.splice(tableIndex, 1);
+    },
     createField({ table }){
       console.log(table);
       const tableIndex = this.tables.findIndex(t => t.id === table);
@@ -216,21 +229,6 @@ export default {
     handleAddRelation(relation) {
       this.relations.push(relation);
     },
-    handleExport() {
-      const schema = {
-        tables: this.tables,
-        relations: this.relations
-      };
-      console.log('Exported Schema:', schema);
-      // Можно добавить логику экспорта в JSON/SQL
-    }
   }
 };
 </script>
-<style scoped>
-.erd-container {
-  display: grid;
-  min-height: 100vh;
-  overflow: hidden;
-}
-</style>

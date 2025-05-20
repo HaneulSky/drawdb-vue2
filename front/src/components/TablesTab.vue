@@ -1,7 +1,6 @@
 <template>
   <div class="tables-tab-container">
     <div class="tables-tab-head">
-      <!-- TODO здесь селект -->
       <input
         v-model="search"
         type="search"
@@ -29,6 +28,7 @@
           :table="table"
           @create:field="$emit('create:field',$event)"
           @update:table="$emit('update:table',$event)"
+          @delete:table="$emit('delete:table',$event)"
         />
       </details>
     </div>

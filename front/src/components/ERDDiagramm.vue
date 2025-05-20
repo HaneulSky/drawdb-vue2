@@ -7,8 +7,10 @@
       :datatypes="datatypes"
       @edit:table="$emit('edit-table', $event)"
       @edit:relation="$emit('edit-relation', $event)"
+      @delete:relation="$emit('delete:relation', $event)"
       @create:table="$emit('create:table')"
       @update:table="$emit('update:table', $event)"
+      @delete:table="$emit('delete:table', $event)"
       @create:field="$emit('create:field',$event)"
     />
     <SvgCanvas 

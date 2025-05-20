@@ -24,6 +24,7 @@
         :datatypes="notRelationDatatypes"
         @create:table="$emit('create:table')"
         @update:table="$emit('update:table', $event)"
+        @delete:table="$emit('delete:table', $event)"
         @create:field="$emit('create:field',$event)"
       />
       <RelationsTab
@@ -33,6 +34,7 @@
         :datatypes="relationDatatypes"
         @create:relation="$emit('create:relation', $event)"
         @update:relation="$emit('update:relation', $event)"
+        @delete:relation="$emit('delete:relation', $event)"
       />
     </div>
   </div>
